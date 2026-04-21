@@ -7,7 +7,7 @@ public class DoorController : MonoBehaviour
     public Transform openStateMarker;
     public float openSpeed = 3f;
 
-    private bool isOpen = false;
+    public bool isOpen = false;
     private bool isAnimating = false;
 
     private Vector3 closedPos;
