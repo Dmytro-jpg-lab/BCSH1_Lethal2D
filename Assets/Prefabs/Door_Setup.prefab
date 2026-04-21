@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5758809680734975323}
   - component: {fileID: 3754674587052918250}
   - component: {fileID: 4949813637485728679}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Door
   m_TagString: Door
   m_Icon: {fileID: 0}
@@ -168,10 +168,10 @@ MonoBehaviour:
   - {x: 0.5, y: -0.49999997, z: 0}
   m_ShapePathHash: 0
   m_InstanceId: 0
-  m_ShadowShape2DComponent: {fileID: 0}
+  m_ShadowShape2DComponent: {fileID: 401535309858737600}
   m_ShadowShape2DProvider:
-    rid: -2
-  m_ShadowCastingSource: 1
+    rid: 6866478074985709644
+  m_ShadowCastingSource: 2
   m_ShadowMesh:
     m_Mesh: {fileID: 0}
     m_LocalBounds:
@@ -190,8 +190,9 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
+    - rid: 6866478074985709644
+      type: {class: ShadowShape2DProvider_SpriteRenderer, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.2D.Runtime}
+      data: 
 --- !u!114 &4949813637485728679
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -206,6 +207,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DoorController
   openStateMarker: {fileID: 1195008818906012206}
   openSpeed: 3
+  isOpen: 0
 --- !u!1 &4614114551284136898
 GameObject:
   m_ObjectHideFlags: 0
