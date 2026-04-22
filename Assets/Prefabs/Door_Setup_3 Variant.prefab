@@ -8,6 +8,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1029739357448868688, guid: 6dcdf08d62558824b8498418ccb1ee92, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1029739357448868688, guid: 6dcdf08d62558824b8498418ccb1ee92, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2073376346158987580, guid: 6dcdf08d62558824b8498418ccb1ee92, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.453962
@@ -70,7 +78,7 @@ PrefabInstance:
       objectReference: {fileID: 7043106047154487491}
     - target: {fileID: 6809708682886972458, guid: 6dcdf08d62558824b8498418ccb1ee92, type: 3}
       propertyPath: m_ShadowMesh.m_InitialTrim
-      value: 0.01
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6809708682886972458, guid: 6dcdf08d62558824b8498418ccb1ee92, type: 3}
       propertyPath: m_PreviousShadowCastingSource
@@ -110,11 +118,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8795036817028865006, guid: 6dcdf08d62558824b8498418ccb1ee92, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.018
+      value: -1.5
       objectReference: {fileID: 0}
     - target: {fileID: 8795036817028865006, guid: 6dcdf08d62558824b8498418ccb1ee92, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.4089
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

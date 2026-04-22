@@ -10,15 +10,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1195008818906012206, guid: 563f42c43adaf01449122856a98132e4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.018
+      value: -1.421
       objectReference: {fileID: 0}
     - target: {fileID: 1195008818906012206, guid: 563f42c43adaf01449122856a98132e4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.4075
+      value: 0.078999996
       objectReference: {fileID: 0}
     - target: {fileID: 3754674587052918250, guid: 563f42c43adaf01449122856a98132e4, type: 3}
       propertyPath: m_ShadowMesh.m_InitialTrim
-      value: 0.01
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3754674587052918250, guid: 563f42c43adaf01449122856a98132e4, type: 3}
       propertyPath: m_PreviousShadowCastingSource
@@ -39,6 +39,14 @@ PrefabInstance:
     - target: {fileID: 6477242893273825732, guid: 563f42c43adaf01449122856a98132e4, type: 3}
       propertyPath: m_Name
       value: Door_Setup_1 Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 7264841858828489360, guid: 563f42c43adaf01449122856a98132e4, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.921
+      objectReference: {fileID: 0}
+    - target: {fileID: 7264841858828489360, guid: 563f42c43adaf01449122856a98132e4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.579
       objectReference: {fileID: 0}
     - target: {fileID: 8529155368904177916, guid: 563f42c43adaf01449122856a98132e4, type: 3}
       propertyPath: m_LocalPosition.x

@@ -8,6 +8,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1195008818906012206, guid: 563f42c43adaf01449122856a98132e4, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.271
+      objectReference: {fileID: 0}
+    - target: {fileID: 1195008818906012206, guid: 563f42c43adaf01449122856a98132e4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.323
+      objectReference: {fileID: 0}
     - target: {fileID: 3754674587052918250, guid: 563f42c43adaf01449122856a98132e4, type: 3}
       propertyPath: m_ShadowMesh.m_InitialTrim
       value: 0.01
@@ -34,7 +42,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7264841858828489360, guid: 563f42c43adaf01449122856a98132e4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.4131
+      value: -1.771
+      objectReference: {fileID: 0}
+    - target: {fileID: 7264841858828489360, guid: 563f42c43adaf01449122856a98132e4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.823
       objectReference: {fileID: 0}
     - target: {fileID: 8529155368904177916, guid: 563f42c43adaf01449122856a98132e4, type: 3}
       propertyPath: m_LocalPosition.x

@@ -96,6 +96,12 @@ public class PlayerInventory : MonoBehaviour
             // Очищаем слот
             slots[selectedSlotIndex].isEmpty = true;
             CalculateTotals();
+            // Очищаем слот
+            slots[selectedSlotIndex].isEmpty = true;
+            CalculateTotals();
+
+            // --- НОВАЯ СТРОЧКА: Создаем звук падения радиусом 8 метров ---
+            BlindHearerAI.MakeNoise(transform.position, 8f);
 
             // Создаем предмет перед игроком
             if (scrapPrefab != null)

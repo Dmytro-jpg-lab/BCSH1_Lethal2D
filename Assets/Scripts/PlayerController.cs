@@ -2,34 +2,36 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("Настройки скорости")]
-    [SerializeField] private float baseMoveSpeed = 5f;
-    [SerializeField] private float minMoveSpeed = 1.5f;
-    [SerializeField] private float sprintMultiplier = 1.6f;
+    [Header("Speed Settings")]
+    public float baseMoveSpeed = 5f;
+    public float minMoveSpeed = 1.5f;
+    public float sprintMultiplier = 1.6f;
 
-    [Header("Настройки веса")]
-    [SerializeField] public float weightPenaltyLimit = 50f;
+    [Header("Weight Settings")]
+    public float weightPenaltyLimit = 50f;
 
-    [Header("Настройки выносливости (Спринт)")]
+    [Header("Stamina Settings")]
     public float maxStamina = 100f;
     public float currentStamina;
     [SerializeField] private float baseStaminaDrain = 15f;
     [SerializeField] private float staminaRegenRate = 10f;
     [SerializeField] private float weightDrainPenalty = 0.5f;
 
-    [Header("Состояние игрока")]
-    public float maxHealth = 100f;
-    public float currentHealth;
-
     private float currentMoveSpeed;
     private Rigidbody2D rb;
     private Vector2 movement;
     private Vector2 mousePosition;
-
     private PlayerInventory inventory;
 
-    // НОВАЯ ПЕРЕМЕННАЯ: Флаг одышки
+    // Состояния штрафа
     private bool isExhausted = false;
+    private float exhaustionTimer = 0f;
+    private const float penaltyDuration = 3f; // Длительность штрафа
+
+    [Header("Player State")]
+    public float maxHealth = 100f;
+    public float currentHealth;
+    public bool isSprinting = false; 
 
     private void Start()
     {
@@ -63,58 +65,54 @@ public class PlayerController : MonoBehaviour
 
         float currentWeight = inventory.totalWeight;
         float speedReduction = (currentWeight / weightPenaltyLimit) * baseMoveSpeed;
-        float speedAfterWeight = baseMoveSpeed - speedReduction;
-        speedAfterWeight = Mathf.Clamp(speedAfterWeight, minMoveSpeed, baseMoveSpeed);
+        float speedAfterWeight = Mathf.Clamp(baseMoveSpeed - speedReduction, minMoveSpeed, baseMoveSpeed);
 
         bool isMoving = movement.magnitude > 0;
 
-        // --- ИСПРАВЛЕННАЯ ЛОГИКА ОДЫШКИ ---
-
-        // Если стамина кончилась — вешаем статус одышки
-        if (currentStamina <= 0)
+        // Если стамина упала в 0 — ловим одышку
+        if (currentStamina <= 0 && !isExhausted)
         {
             isExhausted = true;
+            exhaustionTimer = penaltyDuration;
         }
 
-        // Если игрок отпустил Shift и у него есть хоть немного стамины — снимаем одышку
-        if (!Input.GetKey(KeyCode.LeftShift) && currentStamina > 0)
+        if (isExhausted)
         {
-            isExhausted = false;
-        }
+            // Таймер штрафа тикает
+            exhaustionTimer -= Time.deltaTime;
 
-        // Теперь для спринта нужно, чтобы игрок НЕ был в состоянии одышки
-        bool isSprinting = Input.GetKey(KeyCode.LeftShift) && !isExhausted && currentStamina > 0 && isMoving;
+            // Жестко ставим минимальную скорость
+            currentMoveSpeed = minMoveSpeed;
 
-        if (isSprinting)
-        {
-            currentMoveSpeed = speedAfterWeight * sprintMultiplier;
-            float totalDrainRate = baseStaminaDrain + (currentWeight * weightDrainPenalty);
-            currentStamina -= totalDrainRate * Time.deltaTime;
+            // ИСПРАВЛЕНИЕ: Восстанавливаем стамину даже пока мы в одышке!
+            currentStamina += staminaRegenRate * Time.deltaTime;
+
+            // Когда 3 секунды прошли — снимаем одышку
+            if (exhaustionTimer <= 0)
+            {
+                isExhausted = false;
+            }
         }
         else
         {
-            currentMoveSpeed = speedAfterWeight;
+            // Обычный бег или спринт
+            isSprinting = Input.GetKey(KeyCode.LeftShift) && currentStamina > 0 && isMoving;
 
-            if (currentStamina < maxStamina)
+            if (isSprinting)
             {
+                currentMoveSpeed = speedAfterWeight * sprintMultiplier;
+                float totalDrainRate = baseStaminaDrain + (currentWeight * weightDrainPenalty);
+                currentStamina -= totalDrainRate * Time.deltaTime;
+            }
+            else
+            {
+                currentMoveSpeed = speedAfterWeight;
+                // Восстанавливаем стамину при ходьбе/остановке
                 currentStamina += staminaRegenRate * Time.deltaTime;
             }
         }
 
+        // Не даем стамине выйти за пределы 0-100
         currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
-    }
-
-    // Добавь этот метод в любое место класса (например, в самый конец)
-    public void TakeDamage(float damage)
-    {
-        currentHealth -= damage;
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
-        Debug.Log($"Мерта получил урон! Осталось HP: {currentHealth}");
-
-        if (currentHealth <= 0)
-        {
-            Debug.Log("Мерта погиб...");
-            // Здесь потом добавим логику смерти (рестарт или экран смерти)
-        }
     }
 }
