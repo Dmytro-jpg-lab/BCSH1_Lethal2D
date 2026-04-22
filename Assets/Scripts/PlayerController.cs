@@ -115,4 +115,26 @@ public class PlayerController : MonoBehaviour
         // Не даем стамине выйти за пределы 0-100
         currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
     }
+
+    // --- НОВЫЙ БЛОК: ПОЛУЧЕНИЕ УРОНА ---
+    public void TakeDamage(float damageAmount)
+    {
+        currentHealth -= damageAmount;
+
+        // Чтобы здоровье не ушло в минуса
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+
+        Debug.Log("Монстр кусает! Здоровье: " + currentHealth);
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        Debug.Log("ИГРОК МЕРТВ!");
+        // Позже мы добавим сюда экран Game Over или перезагрузку уровня
+    }
 }

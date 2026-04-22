@@ -15,6 +15,11 @@ public class BlindHearerAI : MonoBehaviour
     [Header("Взаимодействие с дверьми")]
     public LayerMask doorLayer; // Слой Door
 
+    [Header("Attack Settings")]
+    public float attackDistance = 1.2f; // Дистанция удара (настрой так, чтобы доставал вплотную)
+    public float attackCooldown = 1.0f; // Перерыв между ударами (1 секунда)
+    private float lastAttackTime = 0f;
+
     private enum State { Patrol, Investigate, Chase }
     private State currentState = State.Patrol;
 
@@ -27,7 +32,7 @@ public class BlindHearerAI : MonoBehaviour
     public static BlindHearerAI Instance;
 
     // Добавь это куда-нибудь наверх, к остальным переменным
-    public float maxPatrolTime = 5f;
+    public float maxPatrolTime = 7f;
     private float stuckTimer = 0f;
 
     private void Awake() { Instance = this; }
@@ -53,6 +58,7 @@ public class BlindHearerAI : MonoBehaviour
         ListenForPlayer();
         HandleStatesLogic();
         ForceTouchDoors();
+        TryAttackPlayer();
     }
 
     // --- НОВАЯ, ЖЕЛЕЗОБЕТОННАЯ ЛОГИКА ДВЕРЕЙ ---
@@ -139,6 +145,7 @@ public class BlindHearerAI : MonoBehaviour
 
     private void PickNewPatrolPoint()
     {
+        stuckTimer = 0f;
         Vector2 randomDir = Random.insideUnitCircle * Random.Range(4f, 8f);
         Vector3 randomPoint = transform.position + new Vector3(randomDir.x, randomDir.y, 0);
 
@@ -170,4 +177,21 @@ public class BlindHearerAI : MonoBehaviour
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, 2.0f);
     }
+
+    private void TryAttackPlayer()
+    {
+        if (player == null || playerController == null) return;
+
+        float distanceToPlayer = Vector2.Distance(transform.position, player.position);
+
+        // Если подошли достаточно близко И кулдаун атаки прошел
+        if (distanceToPlayer <= attackDistance && Time.time >= lastAttackTime + attackCooldown)
+        {
+            // Сносим 25 ХП (4 удара = 100 ХП)
+            playerController.TakeDamage(25f);
+            lastAttackTime = Time.time;
+        }
+    }
+
+
 }

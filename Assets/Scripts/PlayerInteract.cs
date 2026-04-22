@@ -105,36 +105,38 @@ public class PlayerInteract : MonoBehaviour
     // --- ОБНОВЛЕНО: Ищет и двери, и лут. Лут в приоритете ---
     private void CheckInteractable()
     {
-        if (interactUI == null || promptText == null) return;
+        // 1. Защита от "тихого залипания"
+        if (interactUI == null)
+        {
+            Debug.LogWarning("ВНИМАНИЕ: Слот interactUI пустой в инспекторе Игрока!");
+            return;
+        }
 
+        // Надежно ищем текст даже внутри дочерних объектов
+        if (promptText == null)
+        {
+            promptText = interactUI.GetComponentInChildren<TextMeshProUGUI>();
+            if (promptText == null) return;
+        }
+
+        // 2. Ищем объекты вокруг (без лучей, просто по радиусу)
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, interactRange);
         DoorController foundDoor = null;
         Scrap foundScrap = null;
 
         foreach (Collider2D col in colliders)
         {
-            Vector2 directionToTarget = (col.transform.position - transform.position).normalized;
-            float distanceToTarget = Vector2.Distance(transform.position, col.transform.position);
-
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, directionToTarget, distanceToTarget, obstacleLayer);
-
-            // Если путь свободен (или мы уперлись в сам объект)
-            if (hit.collider == null || hit.collider.gameObject == col.gameObject)
+            if (col.GetComponent<Scrap>() != null)
             {
-                // Пытаемся найти лут
-                if (col.GetComponent<Scrap>() != null)
-                {
-                    foundScrap = col.GetComponent<Scrap>();
-                }
-                // Пытаемся найти дверь
-                else if (col.CompareTag("Door"))
-                {
-                    foundDoor = col.GetComponentInParent<DoorController>();
-                }
+                foundScrap = col.GetComponent<Scrap>();
+            }
+            else if (col.CompareTag("Door"))
+            {
+                foundDoor = col.GetComponentInParent<DoorController>();
             }
         }
 
-        // Показываем нужный текст (Лут важнее двери)
+        // 3. Показываем или прячем интерфейс
         if (foundScrap != null)
         {
             interactUI.SetActive(true);
@@ -143,11 +145,11 @@ public class PlayerInteract : MonoBehaviour
         else if (foundDoor != null)
         {
             interactUI.SetActive(true);
-            if (foundDoor.isOpen) promptText.text = "[E] Zavřít";
-            else promptText.text = "[E] Otevřít";
+            promptText.text = "[E] Otevřít / Zavřít";
         }
         else
         {
+            // ЖЕЛЕЗНО ВЫКЛЮЧАЕМ, если рядом ничего нет
             interactUI.SetActive(false);
         }
     }

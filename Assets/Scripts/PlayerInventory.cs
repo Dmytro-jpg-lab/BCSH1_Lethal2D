@@ -83,36 +83,65 @@ public class PlayerInventory : MonoBehaviour
         return false;
     }
 
+    // Допустим, dropPosition - это координаты твоей мышки
+    public LayerMask obstacleLayer; // Назначь сюда слой стен в Инспекторе
+
+    public void DropItem(Vector2 dropPosition)
+    {
+        // Рисуем невидимый кружок радиусом 0.2 в точке броска.
+        // Если он касается стены - отменяем бросок!
+        Collider2D wallCheck = Physics2D.OverlapCircle(dropPosition, 0.2f, obstacleLayer);
+
+        if (wallCheck != null)
+        {
+            Debug.Log("Don't throw it against the wall!");
+            return; // Прерываем функцию, предмет остается в инвентаре
+        }
+
+        // Если стена не найдена — код идет дальше и предмет падает
+        // Instantiate(itemPrefab, dropPosition, Quaternion.identity);
+        // BlindHearerAI.MakeNoise(...);
+    }
+
     private void DropSelectedScrap()
     {
         // Проверяем, есть ли что-то в ВЫБРАННОМ слоте
         if (!slots[selectedSlotIndex].isEmpty)
         {
-            // Берем данные
+            // 1. Сначала вычисляем, КУДА именно должен упасть предмет
+            Vector3 dropPos = transform.position + transform.up * dropOffset;
+
+            // 2. ПРОВЕРКА НА СТЕНУ
+            // Кидаем невидимый кружок радиусом 0.2f в точку будущего падения
+            Collider2D wallCheck = Physics2D.OverlapCircle(dropPos, 0.2f, obstacleLayer);
+
+            if (wallCheck != null)
+            {
+                // Если там стена - отменяем выброс! 
+                Debug.Log("There's a wall in front of you; the object hasn't been thrown away!");
+                return; // Функция прерывается, предмет остается в инвентаре
+            }
+
+            // 3. Если стены нет - продолжаем выброс как обычно
             string dropName = slots[selectedSlotIndex].name;
             int dropValue = slots[selectedSlotIndex].value;
             float dropWeight = slots[selectedSlotIndex].weight;
 
-            // Очищаем слот
-            slots[selectedSlotIndex].isEmpty = true;
-            CalculateTotals();
-            // Очищаем слот
+            // Очищаем слот (я убрал дублирование, которое у тебя тут было)
             slots[selectedSlotIndex].isEmpty = true;
             CalculateTotals();
 
-            // --- НОВАЯ СТРОЧКА: Создаем звук падения радиусом 8 метров ---
-            BlindHearerAI.MakeNoise(transform.position, 8f);
+            // Создаем звук падения
+            BlindHearerAI.MakeNoise(transform.position, 15f);
 
-            // Создаем предмет перед игроком
+            // Создаем сам предмет
             if (scrapPrefab != null)
             {
-                Vector3 dropPos = transform.position + transform.up * dropOffset;
                 GameObject droppedItem = Instantiate(scrapPrefab, dropPos, Quaternion.identity);
 
                 Scrap scrapScript = droppedItem.GetComponent<Scrap>();
                 if (scrapScript != null)
                 {
-                    // Передаем ему его старые данные!
                     scrapScript.itemName = dropName;
                     scrapScript.scrapValue = dropValue;
                     scrapScript.scrapWeight = dropWeight;

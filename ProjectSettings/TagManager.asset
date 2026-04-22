@@ -43,5 +43,17 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Floor
+    uniqueID: 1725546203
+    locked: 0
+  - name: Items
+    uniqueID: 1276715265
+    locked: 0
+  - name: Walls
+    uniqueID: 2222871913
+    locked: 0
+  - name: PlayerAndEnemies
+    uniqueID: 2813516975
+    locked: 0
   m_RenderingLayers:
   - Default
