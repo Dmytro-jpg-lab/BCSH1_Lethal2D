@@ -49,22 +49,22 @@ public class PlayerInteract : MonoBehaviour
                 {
                     float distanceToScrap = Vector2.Distance(transform.position, col.transform.position);
 
-                    // Пускаем "бронебойный" луч, который собирает ВСЕ препятствия на пути
-                    RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, directionToScrap, distanceToScrap, obstacleLayer);
+                    // Пускаем "бронебойный" луч, который собирает ВСЕ препятствия на пути
+                    RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, directionToScrap, distanceToScrap, obstacleLayer);
                     bool pathBlocked = false;
 
                     foreach (RaycastHit2D hit in hits)
                     {
                         DoorController hitDoor = hit.collider.GetComponentInParent<DoorController>();
 
-                        // Если луч прошел сквозь ОТКРЫТУЮ дверь - игнорируем ее и летим дальше
-                        if (hitDoor != null && hitDoor.isOpen)
+                        // Если луч прошел сквозь ОТКРЫТУЮ дверь - игнорируем ее и летим дальше
+                        if (hitDoor != null && hitDoor.isOpen)
                         {
                             continue;
                         }
 
-                        // В противном случае (это глухая стена или ЗАКРЫТАЯ дверь) - блокируем радар
-                        pathBlocked = true;
+                        // В противном случае (это глухая стена или ЗАКРЫТАЯ дверь) - блокируем радар
+                        pathBlocked = true;
                         break;
                     }
 
@@ -102,25 +102,25 @@ public class PlayerInteract : MonoBehaviour
         Destroy(wave);
     }
 
-    // --- ОБНОВЛЕНО: Ищет и двери, и лут. Лут в приоритете ---
-    private void CheckInteractable()
+    // --- ОБНОВЛЕНО: Ищет и двери, и лут. Лут в приоритете ---
+    private void CheckInteractable()
     {
-        // 1. Защита от "тихого залипания"
-        if (interactUI == null)
+        // 1. Защита от "тихого залипания"
+        if (interactUI == null)
         {
             Debug.LogWarning("ВНИМАНИЕ: Слот interactUI пустой в инспекторе Игрока!");
             return;
         }
 
-        // Надежно ищем текст даже внутри дочерних объектов
-        if (promptText == null)
+        // Надежно ищем текст даже внутри дочерних объектов
+        if (promptText == null)
         {
             promptText = interactUI.GetComponentInChildren<TextMeshProUGUI>();
             if (promptText == null) return;
         }
 
-        // 2. Ищем объекты вокруг (без лучей, просто по радиусу)
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, interactRange);
+        // 2. Ищем объекты вокруг (без лучей, просто по радиусу)
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, interactRange);
         DoorController foundDoor = null;
         Scrap foundScrap = null;
 
@@ -136,8 +136,8 @@ public class PlayerInteract : MonoBehaviour
             }
         }
 
-        // 3. Показываем или прячем интерфейс
-        if (foundScrap != null)
+        // 3. Показываем или прячем интерфейс
+        if (foundScrap != null)
         {
             interactUI.SetActive(true);
             promptText.text = $"[E] Sebrat (${foundScrap.scrapValue})";
@@ -149,20 +149,20 @@ public class PlayerInteract : MonoBehaviour
         }
         else
         {
-            // ЖЕЛЕЗНО ВЫКЛЮЧАЕМ, если рядом ничего нет
-            interactUI.SetActive(false);
+            // ЖЕЛЕЗНО ВЫКЛЮЧАЕМ, если рядом ничего нет
+            interactUI.SetActive(false);
         }
     }
 
 
 
-    // --- ОБНОВЛЕНО: Поднимает лут. Если лута нет - открывает дверь ---
-    private void TryInteract()
+    // --- ОБНОВЛЕНО: Поднимает лут. Если лута нет - открывает дверь ---
+    private void TryInteract()
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, interactRange);
 
-        // 1. Сначала пытаемся подобрать лут
-        foreach (Collider2D col in colliders)
+        // 1. Сначала пытаемся подобрать лут
+        foreach (Collider2D col in colliders)
         {
             Vector2 dir = (col.transform.position - transform.position).normalized;
             float dist = Vector2.Distance(transform.position, col.transform.position);
@@ -175,12 +175,12 @@ public class PlayerInteract : MonoBehaviour
                 {
                     scrap.Collect();
                     return; // Выходим из функции, чтобы случайно не открыть дверь под предметом
-                }
+                }
             }
         }
 
-        // 2. Если лута не оказалось, пытаемся открыть дверь
-        foreach (Collider2D col in colliders)
+        // 2. Если лута не оказалось, пытаемся открыть дверь
+        foreach (Collider2D col in colliders)
         {
             Vector2 dir = (col.transform.position - transform.position).normalized;
             float dist = Vector2.Distance(transform.position, col.transform.position);
@@ -213,3 +213,4 @@ public class PlayerInteract : MonoBehaviour
         Gizmos.DrawRay(transform.position, leftDirection * scanRadius);
     }
 }
+
