@@ -35,42 +35,66 @@ public class PlayerInteract : MonoBehaviour
     {
         if (scanWavePrefab != null) StartCoroutine(AnimateScanWave());
 
+        // Ищем вообще ВСЕ коллайдеры в радиусе (без фильтра по слоям)
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, scanRadius);
+        Debug.Log($"--- НОВЫЙ СКАН --- Найдено объектов в радиусе: {colliders.Length}");
+        foreach (Collider2D c in colliders)
+        {
+            Debug.Log($"Радар нащупал: {c.gameObject.name} (Слой: {LayerMask.LayerToName(c.gameObject.layer)})");
+        }
+        // --------------------------------------------
         foreach (Collider2D col in colliders)
         {
+            // 1. Ищем скрипт лута (на всякий случай проверяем и родителей)
             Scrap scrapItem = col.GetComponent<Scrap>();
-            if (scrapItem != null)
+            if (scrapItem == null) scrapItem = col.GetComponentInParent<Scrap>();
+
+            // 2. Бронебойный поиск ауры монстра (проверяем всё дерево объекта)
+            EnemyAura enemyAura = col.GetComponent<EnemyAura>();
+            if (enemyAura == null) enemyAura = col.GetComponentInParent<EnemyAura>();
+            if (enemyAura == null) enemyAura = col.GetComponentInChildren<EnemyAura>();
+
+            // Если это обычная стена или пол - пропускаем
+            if (scrapItem == null && enemyAura == null) continue;
+
+            if (enemyAura != null) Debug.Log($"[РАДАР] Зацепил коллайдер монстра: {col.gameObject.name}. Проверяю угол...");
+
+            // ЦЕЛИМСЯ В ЦЕНТР КОЛЛАЙДЕРА, а не в точку Pivot (чтобы луч не ушел в пол)
+            Vector2 directionToTarget = (col.bounds.center - transform.position).normalized;
+            Vector2 playerForward = transform.up;
+            float angleToTarget = Vector2.Angle(playerForward, directionToTarget);
+
+            if (angleToTarget < scanAngle / 2f)
             {
-                Vector2 directionToScrap = (col.transform.position - transform.position).normalized;
-                Vector2 playerForward = transform.up;
-                float angleToScrap = Vector2.Angle(playerForward, directionToScrap);
+                if (enemyAura != null) Debug.Log("[РАДАР] Монстр в зоне видимости! Пускаю луч-проверку на стены...");
 
-                if (angleToScrap < scanAngle / 2f)
+                float distanceToTarget = Vector2.Distance(transform.position, col.bounds.center);
+                RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, directionToTarget, distanceToTarget, obstacleLayer);
+                bool pathBlocked = false;
+
+                foreach (RaycastHit2D hit in hits)
                 {
-                    float distanceToScrap = Vector2.Distance(transform.position, col.transform.position);
+                    // ПРОБИВАЕМ САМУ ЦЕЛЬ: Если луч задел любую часть монстра (или дочерний триггер) - игнорим
+                    if (hit.collider.transform.root == col.transform.root) continue;
 
-                    // Пускаем "бронебойный" луч, который собирает ВСЕ препятствия на пути
-                    RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, directionToScrap, distanceToScrap, obstacleLayer);
-                    bool pathBlocked = false;
+                    // Игнорируем самого игрока (чтобы луч не застрял в нас самих)
+                    if (hit.collider.transform.root == transform.root) continue;
 
-                    foreach (RaycastHit2D hit in hits)
+                    DoorController hitDoor = hit.collider.GetComponentInParent<DoorController>();
+                    if (hitDoor != null && hitDoor.isOpen) continue;
+
+                    pathBlocked = true;
+                    if (enemyAura != null) Debug.Log($"[РАДАР] БЛОКИРОВКА! Луч врезался в: {hit.collider.gameObject.name}");
+                    break;
+                }
+
+                if (!pathBlocked)
+                {
+                    if (scrapItem != null) scrapItem.RevealScrap();
+                    if (enemyAura != null)
                     {
-                        DoorController hitDoor = hit.collider.GetComponentInParent<DoorController>();
-
-                        // Если луч прошел сквозь ОТКРЫТУЮ дверь - игнорируем ее и летим дальше
-                        if (hitDoor != null && hitDoor.isOpen)
-                        {
-                            continue;
-                        }
-
-                        // В противном случае (это глухая стена или ЗАКРЫТАЯ дверь) - блокируем радар
-                        pathBlocked = true;
-                        break;
-                    }
-
-                    if (!pathBlocked)
-                    {
-                        scrapItem.RevealScrap();
+                        Debug.Log("[РАДАР] ПУТЬ ЧИСТ! Включаю красное свечение!");
+                        enemyAura.RevealMonster();
                     }
                 }
             }

@@ -2828,7 +2828,7 @@ MonoBehaviour:
   - note: "\u0421\u043B\u0435\u043F\u043E\u0439 \u0443\u0431\u043B\u044E\u0434\u043E\u043A"
     prefab: {fileID: 502707250984127586, guid: f0e9e1b0f024f7f4786c145fc3ac742f, type: 3}
     minCount: 1
-    maxCount: 3
+    maxCount: 2
   - note: "\u041F\u0440\u0443\u0436\u0438\u043D\u043A\u0430"
     prefab: {fileID: 502707250984127586, guid: bac296c4f98226f4f90f0b9cbb8e473f, type: 3}
     minCount: 1
