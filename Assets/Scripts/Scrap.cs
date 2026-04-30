@@ -8,6 +8,7 @@ public class Scrap : MonoBehaviour
     public string itemName;
     public int scrapValue; // Цена
     public float scrapWeight; // Вес
+    public bool isSold = false; 
 
     public GameObject priceUI;
     public SpriteRenderer outlineRenderer;
@@ -88,6 +89,7 @@ public class Scrap : MonoBehaviour
     // --- ОБНОВЛЕННАЯ ФУНКЦИЯ ПОДБОРА ---
     public void Collect()
     {
+        if (isSold) return;
         PlayerInventory inventory = FindObjectOfType<PlayerInventory>();
         if (inventory != null)
         {

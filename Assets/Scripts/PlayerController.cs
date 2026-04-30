@@ -11,6 +11,9 @@ public class PlayerController : MonoBehaviour
     [Header("Weight Settings")]
     public float weightPenaltyLimit = 50f;
 
+    [Header("Flashlight")]
+    public GameObject flashlightObj; // Ссылка на твой объект фонарика
+
     [Header("Stamina Settings")]
     public float maxStamina = 100f;
     public float currentStamina;
@@ -61,6 +64,15 @@ public class PlayerController : MonoBehaviour
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
             return; // Выходим из Update, чтобы не бегать
+        }
+
+        if (Input.GetMouseButtonDown(0)) // При нажатии Левой Кнопки Мыши
+        {
+            if (flashlightObj != null)
+            {
+                // Переключаем состояние (если включен - выключаем, и наоборот)
+                flashlightObj.SetActive(!flashlightObj.activeSelf);
+            }
         }
 
         movement.x = Input.GetAxisRaw("Horizontal");
@@ -144,6 +156,8 @@ public class PlayerController : MonoBehaviour
     {
         isDead = true;
         Debug.Log("ИГРОК МЕРТВ!");
+
+        if (inventory != null) inventory.bankScore = 0;
 
         // 1. Вырубаем радар и возможность открывать двери
         if (interact != null) interact.enabled = false;

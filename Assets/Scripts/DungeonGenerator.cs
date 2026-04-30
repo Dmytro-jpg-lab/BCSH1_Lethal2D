@@ -15,9 +15,8 @@ public class DungeonGenerator : MonoBehaviour
     public List<Room> roomPrefabs;
 
     [Header("Спавн Монстров")]
-    public GameObject monsterPrefab; // Твой слепой моб с A*
-    public int minMonsters = 1;
-    public int maxMonsters = 2;
+    // Теперь это список НАСТРОЕК для каждого монстра
+    public List<MonsterSpawnConfig> monsterSpawns;
 
     [Header("Система Лута (Lethal Style)")]
     public List<GameObject> lootPrefabs; // Список предметов (Scrap и т.д.)
@@ -144,33 +143,40 @@ public class DungeonGenerator : MonoBehaviour
     }
     private void SpawnMonsters()
     {
-        // Проверяем, есть ли кого спавнить и есть ли комнаты помимо стартовой
-        if (monsterPrefab == null || spawnedRooms.Count <= 1) return;
+        // Проверяем, есть ли комнаты (игнорируем стартовую) и настроены ли монстры
+        if (monsterSpawns == null || monsterSpawns.Count == 0 || spawnedRooms.Count <= 1) return;
 
-        int monstersToSpawn = Random.Range(minMonsters, maxMonsters + 1);
-        int spawnedCount = 0;
+        int totalSpawned = 0;
 
-        for (int i = 0; i < monstersToSpawn; i++)
+        // Перебираем каждую настройку монстра из нашего списка
+        foreach (var config in monsterSpawns)
         {
-            // Выбираем случайную комнату. 
-            // Индекс от 1 до spawnedRooms.Count гарантирует, что мы ИГНОРИРУЕМ комнату 0 (Старт)
-            int randomRoomIndex = Random.Range(1, spawnedRooms.Count);
-            Room room = spawnedRooms[randomRoomIndex];
+            if (config.prefab == null) continue; // Если забыл вставить префаб - пропускаем
 
-            BoxCollider2D roomBounds = room.GetComponent<BoxCollider2D>();
-            if (roomBounds == null) continue;
+            // Бросаем кубик специально для ЭТОГО типа монстра
+            int countToSpawn = Random.Range(config.minCount, config.maxCount + 1);
 
-            // Считаем случайную точку в границах комнаты (с отступом от стен)
-            float rx = Random.Range(roomBounds.bounds.min.x + 1.5f, roomBounds.bounds.max.x - 1.5f);
-            float ry = Random.Range(roomBounds.bounds.min.y + 1.5f, roomBounds.bounds.max.y - 1.5f);
-            Vector3 spawnPos = new Vector3(rx, ry, 0);
+            for (int i = 0; i < countToSpawn; i++)
+            {
+                // Выбираем случайную комнату (игнорируя Старт под индексом 0)
+                int randomRoomIndex = Random.Range(1, spawnedRooms.Count);
+                Room room = spawnedRooms[randomRoomIndex];
 
-            // Спавним монстра
-            Instantiate(monsterPrefab, spawnPos, Quaternion.identity);
-            spawnedCount++;
+                BoxCollider2D roomBounds = room.GetComponent<BoxCollider2D>();
+                if (roomBounds == null) continue;
+
+                // Считаем случайную точку в границах комнаты
+                float rx = Random.Range(roomBounds.bounds.min.x + 1.5f, roomBounds.bounds.max.x - 1.5f);
+                float ry = Random.Range(roomBounds.bounds.min.y + 1.5f, roomBounds.bounds.max.y - 1.5f);
+                Vector3 spawnPos = new Vector3(rx, ry, 0);
+
+                // Спавним конкретного монстра
+                Instantiate(config.prefab, spawnPos, Quaternion.identity);
+                totalSpawned++;
+            }
         }
 
-        Debug.Log($"Слепых ублюдков заспавнено: {spawnedCount}");
+        Debug.Log($"Бестиарий заполнился! Всего заспавнено монстров: {totalSpawned}");
     }
     private void DistributeLoot()
     {
@@ -311,4 +317,13 @@ public class DungeonGenerator : MonoBehaviour
             }
         }
     }
+}
+// Добавляем этот класс ВНЕ класса DungeonGenerator (в самом низу файла)
+[System.Serializable]
+public class MonsterSpawnConfig
+{
+    public string note = "Имя монстра"; // Просто чтобы тебе было удобно подписывать их в Инспекторе
+    public GameObject prefab;
+    public int minCount = 1;
+    public int maxCount = 2;
 }

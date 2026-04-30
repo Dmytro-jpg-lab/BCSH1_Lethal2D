@@ -22,7 +22,8 @@ public class PlayerHUD : MonoBehaviour
         // ЧИСТЫЙ ТЕКСТ: Вес и Деньги
         float currentWeight = playerInventory.totalWeight;
         int totalValue = playerInventory.totalScrapValue;
+        int bank = playerInventory.bankScore;
 
-        weightText.text = $"LOAD: {currentWeight:F1} KG\nVALUE: ${totalValue}";
+        weightText.text = $"LOAD: {currentWeight:F1} KG     VALUE: $ {totalValue}\nBANK: $ {bank}";
     }
 }

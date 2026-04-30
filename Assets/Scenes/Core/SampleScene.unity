@@ -1662,7 +1662,7 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.5
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.1
+  m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
   m_ApplyToSortingLayers: 00000000dbbed9660121194cafdcb2a769557e84
@@ -2824,9 +2824,15 @@ MonoBehaviour:
   sealPrefab: {fileID: 6865885318427497716, guid: c34913b522940114d8d63c4c97df70f4, type: 3}
   roomPrefabs:
   - {fileID: 8535564586131949635, guid: 27f4899d631573340b7524fd0a82aa94, type: 3}
-  monsterPrefab: {fileID: 502707250984127586, guid: f0e9e1b0f024f7f4786c145fc3ac742f, type: 3}
-  minMonsters: 1
-  maxMonsters: 3
+  monsterSpawns:
+  - note: "\u0421\u043B\u0435\u043F\u043E\u0439 \u0443\u0431\u043B\u044E\u0434\u043E\u043A"
+    prefab: {fileID: 502707250984127586, guid: f0e9e1b0f024f7f4786c145fc3ac742f, type: 3}
+    minCount: 1
+    maxCount: 3
+  - note: "\u041F\u0440\u0443\u0436\u0438\u043D\u043A\u0430"
+    prefab: {fileID: 502707250984127586, guid: bac296c4f98226f4f90f0b9cbb8e473f, type: 3}
+    minCount: 1
+    maxCount: 2
   lootPrefabs:
   - {fileID: 6436601161884342437, guid: 964c97cae29a8974e80e4bdff6a8ae19, type: 3}
   emptyRoomChance: 50.3
@@ -4377,7 +4383,7 @@ MonoBehaviour:
   m_ComponentVersion: 2
   m_LightType: 3
   m_BlendStyleIndex: 0
-  m_FalloffIntensity: 0.5
+  m_FalloffIntensity: 0.401
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 0.7
   m_LightVolumeIntensity: 1
@@ -4582,7 +4588,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: AstarPathfindingProject::AstarPath
   version: 1
   data:
-    dataString: UEsDBBQAAAgIAAAIIewZ1taGWgIAABMFAAALACQAZ3JhcGgwLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQF1VEtz2jAQ/iuMzqVjXqX01hpCekjChHZy8WWR1liDLHn0CJAM/72SbGOHTk4s3367++1DfidcmgqpVXqtOXtQDMmPAQk2+TLonPd4gr2SW/6GLeeFM1sEEkTOM1iuPD4KYUaVaDWnP+VeBHLiQSd5rnS5YntMlbHGwzkIg96llQ3R0kPvA3LyP8NFCDl7azwP1pu3Fsng4k2K0qLuqC2xpdUsJ6mAskIWJHfk+axhz2eRJn0zDSP5OgpOqoTgphFD7LmKzT7DObTKOPjGYvXQZ4F8X9ggsh/4lOcGbaNIw3nJtZ9PnZH8UvXQSjCHWtYrCBdqjBbjKKlO+vCf/9s0unOtyvu27igJNWzB6cErpGBsb6p9ePlRuJNHEAfYCXwpUD6qtVZOMu+02oVQZ3C87P5eW0sLpIcOr6W2YFvXVZ8vZzgaXC6x/VMqeLmLc5/WwFaoOOy4etR+M7+94ngY4VgmNRpk/DX4B/b9C2ocd1wb611NmzLo2ymnA5Ws4tBCO86mSkvU/QwVShD2vPF57O0Sb3yfR91BeCxN9cbXvoGbkAh3/CS5cW3U8bouU6jjA5riyVnBJXYLCI5HP6hUSVnfWL+lNmzrdA60F7Z3nH08LjKZAN0B5HOc0BGbTYffZ4sZjidjliCdJoAkXh+Xvk8Qm1poMx6/Ntkll/7S2m/IYK2hivfONBzX/K1UpmNymast1Yjyqc5wFY7aF/HPkq0Y9wPaorVcxoWT94wIRQ/IsmuiLHa6OlkNWZclIxV/VTYgGUnjRyMjAb5e80bjK8djKN4mu5DLP1BLAwQUAAAICAAACCHssl/XgG0AAAB4AAAACQAkAG1ldGEuanNvbgoAIAAAAAAAAQAYAACAPtXesZ0BAIA+1d6xnQEAgD7V3rGdAatWKkstKs7Mz1OyUjDRM9IzNNdRUEovSizIKAaKGII4pZkpIHa0krFxYnJSYmKaeapxsmGKqYmuhamlaaqRsVGKQWqyiUFiqlIsUH1JZUGqX2JuKkRPQGJJRlpmXkpmXrqee1FmijvIaKXYWgBQSwECLQAUAAAICAAACCHsGdbWhloCAAATBQAACwAkAAAAAAAAAAAAAAAAAAAAZ3JhcGgwLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQFQSwECLQAUAAAICAAACCHssl/XgG0AAAB4AAAACQAkAAAAAAAAAAAAAACnAgAAbWV0YS5qc29uCgAgAAAAAAABABgAAIA+1d6xnQEAgD7V3rGdAQCAPtXesZ0BUEsFBgAAAAACAAIAuAAAAF8DAAAAAA==
+    dataString: UEsDBBQAAAgIAAAIIeytsOPAVgIAABIFAAALACQAZ3JhcGgwLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQF1VEtz2jAQ/iuMzk3HvErprSWE9JDAhHRy8UVIa6xBljx6hNfw36uVbewww4nl2293v33IZyKULYE5bRZG8BfNgfzqEbTJt17rfIYD3Wq1FidoOB+CuxxJNHLeqBM64H0Ms7oAZwT7rbYSyUkAvRKZNsWcb2GmrbMBzqi0EFxGO4xWATr3yCH8PEwx5BiswQStU7CmSe8STAbKgWmpDbGhVSyvmKRFCRwlt+TJuGZPxpGmQjM1I/neRyfTUgpbiyHuWMZm3+gRW+WChsZidewzB7HNHYrsBi6zzIKrFRl6fBQmzKfKSP7oamgFtbtK1ieVHmv8GEVFVc6Xe+7M6OK5KdtPsITLBdsFgYxa1xlqF378qturPZU7upHwkYN61QujveLB6YzHUG9h8Nj+vXY2y4HtWryS2oBNXV/e381Dv3e5xO4PMymKTRz7qALWUsdZx82DCYv5GxTHu8BbGVYoyvhn4Z1uuwdUO56EsS646jYV6ttob5BK5nFo2I53M20UmG6GEhSV7rgKedztDm9896OeKL6Vunrta57ATUiEW36S3LhWen9dl831/gVsvvROCgXtAtDxGgY100pVJ9ZtqQlbe5NR1gnbesG/HhcZDinbUJpNYMj6fDx6+DmejmEwHPAE2CihQOL1CRX6pHJVCa3HE9am2uQqXFrzCektDC3juXND9wtxKrRtmUJles0MgFpWGa7CwYQi4VXyORdhQGtwTqi4cHJOidRsBzy9Jkpjp/ODMzRts6SkFJ/aIZKSWfxmpATh6zWvDHwK2GPxJtmFXP4DUEsDBBQAAAgIAAAIIeyyX9eAbQAAAHgAAAAJACQAbWV0YS5qc29uCgAgAAAAAAABABgAAIA+1d6xnQEAgD7V3rGdAQCAPtXesZ0Bq1YqSy0qzszPU7JSMNEz0jM011FQSi9KLMgoBooYgjilmSkgdrSSsXFiclJiYpp5qnGyYYqpia6FqaVpqpGxUYpBarKJQWKqUixQfUllQapfYm4qRE9AYklGWmZeSmZeup57UWaKO8hopdhaAFBLAQItABQAAAgIAAAIIeytsOPAVgIAABIFAAALACQAAAAAAAAAAAAAAAAAAABncmFwaDAuanNvbgoAIAAAAAAAAQAYAACAPtXesZ0BAIA+1d6xnQEAgD7V3rGdAVBLAQItABQAAAgIAAAIIeyyX9eAbQAAAHgAAAAJACQAAAAAAAAAAAAAAKMCAABtZXRhLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQFQSwUGAAAAAAIAAgC4AAAAWwMAAAAA
     upgradeData: 
     file_cachedStartup: {fileID: 0}
     data_cachedStartup: 
@@ -4989,6 +4995,7 @@ MonoBehaviour:
   minMoveSpeed: 2
   sprintMultiplier: 1.6
   weightPenaltyLimit: 40
+  flashlightObj: {fileID: 435352498}
   maxStamina: 100
   currentStamina: 0
   baseStaminaDrain: 15
@@ -5064,6 +5071,7 @@ MonoBehaviour:
   selectedSlotIndex: 0
   totalScrapValue: 0
   totalWeight: 0
+  bankScore: 0
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 64

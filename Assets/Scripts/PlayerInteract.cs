@@ -156,46 +156,42 @@ public class PlayerInteract : MonoBehaviour
 
 
 
-    // --- ОБНОВЛЕНО: Поднимает лут. Если лута нет - открывает дверь ---
-    private void TryInteract()
+    
+    // --- ОБНОВЛЕНО: Поднимает лут. Если лута нет - открывает дверь СКВОЗЬ СТЕНЫ ---
+    private void TryInteract()
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, interactRange);
 
-        // 1. Сначала пытаемся подобрать лут
-        foreach (Collider2D col in colliders)
+        // 1. Сначала пытаемся подобрать лут (тут оставляем проверку на стены, чтобы сквозь них не пылесосить)
+        foreach (Collider2D col in colliders)
         {
-            Vector2 dir = (col.transform.position - transform.position).normalized;
-            float dist = Vector2.Distance(transform.position, col.transform.position);
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, dist, obstacleLayer);
-
-            if (hit.collider == null || hit.collider.gameObject == col.gameObject)
+            Scrap scrap = col.GetComponent<Scrap>();
+            if (scrap != null)
             {
-                Scrap scrap = col.GetComponent<Scrap>();
-                if (scrap != null)
+                Vector2 dir = (col.transform.position - transform.position).normalized;
+                float dist = Vector2.Distance(transform.position, col.transform.position);
+                RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, dist, obstacleLayer);
+
+                // Если между нами и лутом нет препятствий
+                if (hit.collider == null || hit.collider.gameObject == col.gameObject)
                 {
                     scrap.Collect();
-                    return; // Выходим из функции, чтобы случайно не открыть дверь под предметом
-                }
+                    return; // Выходим из функции
+                }
             }
         }
 
-        // 2. Если лута не оказалось, пытаемся открыть дверь
-        foreach (Collider2D col in colliders)
+        // 2. Если лута нет, пытаемся открыть дверь (БЕЗ ПРОВЕРКИ ЛУЧОМ)
+        foreach (Collider2D col in colliders)
         {
-            Vector2 dir = (col.transform.position - transform.position).normalized;
-            float dist = Vector2.Distance(transform.position, col.transform.position);
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, dist, obstacleLayer);
-
-            if (hit.collider == null || hit.collider.gameObject == col.gameObject)
+            if (col.CompareTag("Door"))
             {
-                if (col.CompareTag("Door"))
+                DoorController door = col.GetComponentInParent<DoorController>();
+                if (door != null)
                 {
-                    DoorController door = col.GetComponentInParent<DoorController>();
-                    if (door != null)
-                    {
-                        door.ToggleDoor();
-                        return;
-                    }
+                    // Дверь в радиусе interactRange? Просто открываем, плевать на стены!
+                    door.ToggleDoor();
+                    return;
                 }
             }
         }

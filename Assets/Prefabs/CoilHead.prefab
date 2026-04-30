@@ -11,12 +11,12 @@ GameObject:
   - component: {fileID: 5785625183017639530}
   - component: {fileID: 301313523866265846}
   - component: {fileID: 3532471600458310960}
-  - component: {fileID: 2015586925168410736}
   - component: {fileID: 4606720804743003714}
   - component: {fileID: 5139712619037008831}
   - component: {fileID: 326838284987104973}
-  m_Layer: 9
-  m_Name: BlindHearer
+  - component: {fileID: 8715371079137493773}
+  m_Layer: 6
+  m_Name: CoilHead
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -87,7 +87,7 @@ SpriteRenderer:
   m_SortingOrder: 10
   m_MaskInteraction: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0.8039216, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -123,29 +123,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &2015586925168410736
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 502707250984127586}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab62c8c2b87d3164db9b0420c31b25c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlindHearerAI
-  patrolSpeed: 1.5
-  investigateSpeed: 3.5
-  chaseSpeed: 10
-  sprintHearingRadius: 15
-  noiseInvestigateDuration: 3
-  doorLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  attackDistance: 1.2
-  attackCooldown: 1
-  maxPatrolTime: 5
 --- !u!58 &4606720804743003714
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -252,3 +229,27 @@ MonoBehaviour:
   slowWhenNotFacingTarget: 1
   whenCloseToDestination: 0
   constrainInsideGraph: 0
+--- !u!114 &8715371079137493773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 502707250984127586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 485f7ace3f586b2478856d985221b177, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CoilHeadAI
+  chaseSpeed: 7
+  doorLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  agroRadius: 5
+  loseRadius: 11
+  playerFOV: 110
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  attackDistance: 1.2
+  attackCooldown: 1

@@ -17,6 +17,7 @@ public class PlayerInventory : MonoBehaviour
     public GameObject scrapPrefab;
     public float dropOffset = 1.2f;
 
+
     // Массив из 4 слотов
     public InventoryItem[] slots;
 
@@ -26,6 +27,7 @@ public class PlayerInventory : MonoBehaviour
     // Общие статы для UI и физики
     public int totalScrapValue = 0;
     public float totalWeight = 0f;
+    public int bankScore = 0;
 
     private void Awake()
     {
@@ -145,6 +147,13 @@ public class PlayerInventory : MonoBehaviour
                     scrapScript.itemName = dropName;
                     scrapScript.scrapValue = dropValue;
                     scrapScript.scrapWeight = dropWeight;
+
+                    if (Mathf.Abs(transform.position.x) <= 5f && Mathf.Abs(transform.position.y) <= 5f)
+                    {
+                        scrapScript.isSold = true; // Делаем предмет декорацией
+                        bankScore += dropValue;    // Начисляем деньги в банк
+                        Debug.Log($"ПРОДАНО! +${dropValue}. В банке: ${bankScore}");
+                    }
                 }
             }
         }

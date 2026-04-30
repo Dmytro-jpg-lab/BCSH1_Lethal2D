@@ -248,6 +248,7 @@ MonoBehaviour:
   itemName: 
   scrapValue: 0
   scrapWeight: 0
+  isSold: 0
   priceUI: {fileID: 2971094459180042543}
   outlineRenderer: {fileID: 7466035602271089872}
   darkenMultiplier: 0.129

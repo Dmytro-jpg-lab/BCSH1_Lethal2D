@@ -32,7 +32,7 @@ public class BlindHearerAI : MonoBehaviour
     public static BlindHearerAI Instance;
 
     // Добавь это куда-нибудь наверх, к остальным переменным
-    public float maxPatrolTime = 7f;
+    public float maxPatrolTime = 3f;
     private float stuckTimer = 0f;
 
     private void Awake() { Instance = this; }
@@ -89,8 +89,8 @@ public class BlindHearerAI : MonoBehaviour
             }
         }
     }
-    // -------------------------------------------
-
+    // ------------------------------------------- 
+    
     private void ListenForPlayer()
     {
         float distanceToPlayer = Vector2.Distance(transform.position, player.position);
